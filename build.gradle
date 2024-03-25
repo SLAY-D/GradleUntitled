@@ -1,0 +1,56 @@
+plugins {
+    id 'java'
+    id "io.qameta.allure" version "2.11.2"
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+compileJava.options.encoding = 'UTF-8'
+tasks.withType(JavaCompile){
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.8.1'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
+    testCompileOnly 'org.projectlombok:lombok:1.18.32'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
+    testImplementation 'org.aeonbits.owner:owner:1.0.4'
+    testImplementation 'commons-io:commons-io:2.15.1'
+    //testImplementation 'io.qameta.allure:allure-maven:2.8'
+
+}
+
+test {
+    useJUnitPlatform()
+    testLogging{
+        events "passed", "skipped", "failed"
+    }
+}
+
+// Запуск тестов по тегам
+test{
+    testLogging{
+        events "passed", "skipped", "failed"
+    }
+    tasks.register("myTags", Test.class){
+        String fullTags = System.getProperty("customTags")
+        if (fullTags!=null){
+            String[] tags = fullTags.split(",")
+            useJUnitPlatform() {
+                for (String tag : tags){
+                    includeTags.add(tag)
+                }
+            }
+        }
+
+    }
+}
+
