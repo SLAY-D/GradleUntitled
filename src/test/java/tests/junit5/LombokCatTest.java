@@ -1,8 +1,8 @@
-package tests;
+package tests.junit5;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import tests.models.Cat;
+import models.Cat;
 
 public class LombokCatTest {
 

@@ -1,4 +1,4 @@
-package tests.models;
+package models;
 
 public class LateInitExample {
     private String value;

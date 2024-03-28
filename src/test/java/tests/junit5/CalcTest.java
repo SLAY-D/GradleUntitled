@@ -1,4 +1,4 @@
-package tests;
+package tests.junit5;
 
 import calc.CalcSteps;
 import io.qameta.allure.Allure;

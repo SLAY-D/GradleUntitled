@@ -1,4 +1,4 @@
-package tests;
+package tests.junit5;
 
 import listener.RetryListener;
 import org.junit.jupiter.api.*;

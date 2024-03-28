@@ -1,8 +1,8 @@
-package tests;
+package tests.junit5;
 
 import org.junit.jupiter.api.Test;
-import tests.models.Cat;
-import tests.models.LateInitExample;
+import models.Cat;
+import models.LateInitExample;
 
 import java.util.ArrayList;
 import java.util.List;

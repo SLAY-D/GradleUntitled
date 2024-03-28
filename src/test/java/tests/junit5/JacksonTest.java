@@ -1,8 +1,8 @@
-package tests;
+package tests.junit5;
 
 import org.junit.jupiter.api.Test;
-import tests.models.Cat;
-import tests.models.People;
+import models.Cat;
+import models.People;
 import utils.JsonHelper;
 
 public class JacksonTest {

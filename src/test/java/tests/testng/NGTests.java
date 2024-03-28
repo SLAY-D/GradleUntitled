@@ -1,13 +1,12 @@
-package tests;
+package tests.testng;
 
 import calc.CalcSteps;
 import listener.RetryListenerTestNG;
-import org.junit.jupiter.api.Assertions;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.annotations.*;
-import tests.models.People;
+import models.People;
 
 import java.util.ArrayList;
 import java.util.List;

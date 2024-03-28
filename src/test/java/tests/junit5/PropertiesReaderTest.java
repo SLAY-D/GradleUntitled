@@ -1,10 +1,10 @@
-package tests;
+package tests.junit5;
 
 import lombok.SneakyThrows;
 import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import tests.models.Settings;
+import models.Settings;
 import utils.AppConfig;
 import utils.JsonHelper;
 

@@ -1,8 +1,8 @@
-package tests;
+package tests.junit5;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import tests.models.People;
+import models.People;
 
 import java.io.File;
 import java.io.IOException;
