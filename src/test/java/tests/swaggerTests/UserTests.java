@@ -102,13 +102,13 @@ public class UserTests {
                 .should(hasMessage("Missing login or password"))
                 .should(hasStatusCode(400));
 
-        new GenericAssertableResponse<Info>(given().contentType(ContentType.JSON)
+        Info updated = new GenericAssertableResponse<Info>(given().contentType(ContentType.JSON)
                 .body(user)
                 .post("/api/signup")
                 .then(), new TypeRef<Info>() {})
                 .should(hasMessage("Missing login or password"))
                 .should(hasStatusCode(400))
-                .asObject();
+                .asObject("info");
 
         Assertions.assertEquals("Missing login or password", errorInfo.getMessage());
     }
