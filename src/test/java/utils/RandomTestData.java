@@ -9,26 +9,23 @@ import java.util.Collections;
 import java.util.Random;
 
 public class RandomTestData {
-    private static Random random = new Random();
-
+    private static Random random;
     private static Faker faker = new Faker();
 
-    public static GamesItem getRandomGame(){
-        int randomNumber = Math.abs(random.nextInt()); // Необходимо для того, чтобы всегда было уникальное имя пользователя
-
+    public static GamesItem getRandomGame() {
         SimilarDlc similarDlc = SimilarDlc.builder()
                 .isFree(false)
                 .dlcNameFromAnotherGame(faker.funnyName().name())
                 .build();
 
         DlcsItem dlcsItem = DlcsItem.builder()
+                .rating(faker.random().nextInt(10))
+                .price(faker.random().nextInt(1, 500))
                 .description(faker.funnyName().name())
-                .price(faker.random().nextInt(1,500))
                 .dlcName(faker.dragonBall().character())
                 .isDlcFree(false)
-                .similarDlc(similarDlc)
-                .rating(faker.random().nextInt(10))
-                .build();
+                .similarDlc(similarDlc).build();
+
 
         Requirements requirements = Requirements.builder()
                 .ramGb(faker.random().nextInt(4, 16))
@@ -36,6 +33,7 @@ public class RandomTestData {
                 .hardDrive(faker.random().nextInt(30, 70))
                 .videoCard("NVIDIA")
                 .build();
+
 
         return GamesItem.builder()
                 .requirements(requirements)
@@ -53,25 +51,29 @@ public class RandomTestData {
                 .build();
     }
 
-    public static FullUser getRandomUserWithGames() {
-        int randomNumber = Math.abs(random.nextInt());
+    public static FullUser getRandomUserWithGames(){
+        random = new Random();
+        int randomNumber = Math.abs(random.nextInt()); // Необходимо для того, чтобы всегда было уникальное имя пользователя
         GamesItem gamesItem = getRandomGame();
+
         return FullUser.builder()
-                .login(faker.name().username() + randomNumber)
-                .pass(faker.internet().password())
+                .login("CombuchaUser" + randomNumber)
+                .pass("gribochekPass")
                 .games(Collections.singletonList(gamesItem))
                 .build();
     }
 
-    public static FullUser getRandomUser() {
-        int randomNumber = Math.abs(random.nextInt());
+    public static FullUser getRandomUser(){
+        random = new Random();
+        int randomNumber = Math.abs(random.nextInt()); // Необходимо для того, чтобы всегда было уникальное имя пользователя
+
         return FullUser.builder()
-                .login("threadQATestUser" + randomNumber)
-                .pass("passwordCOOL")
+                .login("CombuchaUser" + randomNumber)
+                .pass("gribochekPass")
                 .build();
     }
 
-    public static FullUser getAdminUser() {
+    public static FullUser getAdminUser(){
         return FullUser.builder()
                 .login("admin")
                 .pass("admin")

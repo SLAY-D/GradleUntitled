@@ -2,11 +2,18 @@ package tests.swaggerTests;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.response.Response;
+import listener.AdminUser;
+import listener.AdminUserResolver;
 import listener.CustomTpl;
 import models.Swagger.FullUser;
+import models.Swagger.Responses.CreateUser.Info;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import services.UserService;
 
 import java.util.List;
@@ -16,9 +23,18 @@ import static assertions.Conditions.hasMessage;
 import static assertions.Conditions.hasStatusCode;
 import static utils.RandomTestData.*;
 
+@ExtendWith(AdminUserResolver.class)
 public class UserNewTests {
 
     private static UserService userService;
+    private FullUser user;
+
+    @BeforeEach
+    public void initTestUser(){
+        user = getRandomUser();
+    }
+
+
 
     @BeforeAll
     public static void setUp(){
@@ -27,28 +43,33 @@ public class UserNewTests {
         userService = new UserService();
     }
 
-
     @Test
     public void positiveRegisterTest(){
-        FullUser user = getRandomUser();
-
         userService.register(user)
                 .should(hasStatusCode(201))
                 .should(hasMessage("User created"));
     }
 
     @Test
-    public void positiveRegisterWithGameTest(){
+    public void positiveRegisterWithGamesTest(){
         FullUser user = getRandomUserWithGames();
 
-        userService.register(user)
-                .should(hasStatusCode(201))
-                .should(hasMessage("User created"));
+        Response response = userService.register(user)
+//                .should(hasStatusCode(201))
+//                .should(hasMessage("User created"))
+                .asResponse();
+
+        Info info = response.jsonPath().getObject("info", Info.class);
+        SoftAssertions softAssertions = new SoftAssertions();
+        softAssertions.assertThat(info.getMessage()).as("Сообщение об ошибке было неверным")
+                .isEqualTo("fake message");
+        softAssertions.assertThat(response.statusCode()).as("Status code isnt 200")
+                .isEqualTo(201);
+        softAssertions.assertAll();
     }
 
     @Test
     public void negativeRegisterLoginExistTest(){
-        FullUser user = getRandomUser();
         userService.register(user);
 
         userService.register(user)
@@ -58,7 +79,6 @@ public class UserNewTests {
 
     @Test
     public void negativeNoPasswordTest(){
-        FullUser user = getRandomUser();
         user.setPass(null);
         userService.register(user)
                 .should(hasStatusCode(400))
@@ -66,9 +86,8 @@ public class UserNewTests {
     }
 
     @Test
-    public void positiveAuthTest(){
-        FullUser user = getAdminUser();
-        String token = userService.auth(user)
+    public void positiveAdminAuthTest(@AdminUser FullUser admin){
+        String token = userService.auth(admin)
                 .should(hasStatusCode(200))
                 .asJwt();
 
@@ -77,7 +96,6 @@ public class UserNewTests {
 
     @Test
     public void positiveNewUserAuthTest(){
-        FullUser user = getRandomUser();
         userService.register(user)
                         .should(hasStatusCode(201))
                         .should(hasMessage("User created"));
@@ -91,7 +109,6 @@ public class UserNewTests {
 
     @Test
     public void negativeAuthTest(){
-        FullUser user = getRandomUser();
         userService.auth(user).should(hasStatusCode(401));
     }
 
@@ -124,7 +141,6 @@ public class UserNewTests {
     // Проверка того, что пароль действительно изменился
     @Test
     public void positiveChangeUserPasswordTest(){
-        FullUser user = getRandomUser();
         String oldPass = user.getPass();
         userService.register(user)
                 .should(hasStatusCode(201))
@@ -180,8 +196,6 @@ public class UserNewTests {
 
     @Test
     public void positiveDeleteNewUserTest(){
-        FullUser user = getRandomUser();
-
         userService.register(user)
                 .should(hasMessage("User created"))
                 .should(hasStatusCode(201));

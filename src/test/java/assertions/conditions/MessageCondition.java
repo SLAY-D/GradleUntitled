@@ -13,6 +13,7 @@ public class MessageCondition implements Condition {
 
     private final String expectedMessage;
 
+    // Извлечение и проверка поля info в ответе
     @Override
     public void check(ValidatableResponse response) {
         Info info = response.extract().jsonPath().getObject("info", Info.class);

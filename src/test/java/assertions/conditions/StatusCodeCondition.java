@@ -5,6 +5,11 @@ import io.restassured.response.ValidatableResponse;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 
+
+/*
+    Получение статус кода ответа
+ */
+
 @RequiredArgsConstructor
 public class StatusCodeCondition implements Condition {
 

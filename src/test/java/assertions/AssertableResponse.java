@@ -16,22 +16,27 @@ public class AssertableResponse {
         return this;
     }
 
+    // Извлечение jwtToken из ответа
     public String asJwt(){
         return response.extract().jsonPath().getString("token");
     }
 
+    // Извлечение тела ответа в class
     public <T> T as(Class<T> tClass){
         return response.extract().as(tClass);
     }
 
+    // Извлечение конкретного пути jsonPath из ответа в class
     public <T> T as(String jsonPath, Class<T> tClass){
         return response.extract().jsonPath().getObject(jsonPath, tClass);
     }
 
+    // Извлечение тела ответа в список
     public <T> List<T> asList(Class<T> tClass){
         return response.extract().jsonPath().getList("",tClass);
     }
 
+    // Извлечение конкретного пути jsonPath из ответа в список
     public <T> List<T> asList(String jsonPath, Class<T> tClass){
         return response.extract().jsonPath().getList(jsonPath,tClass);
     }
