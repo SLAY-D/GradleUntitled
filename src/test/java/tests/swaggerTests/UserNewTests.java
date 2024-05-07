@@ -14,9 +14,9 @@ import java.util.Random;
 
 import static assertions.Conditions.hasMessage;
 import static assertions.Conditions.hasStatusCode;
+import static utils.RandomTestData.*;
 
 public class UserNewTests {
-    private static Random random;
 
     private static UserService userService;
 
@@ -24,29 +24,22 @@ public class UserNewTests {
     public static void setUp(){
         RestAssured.baseURI = "http://85.192.34.140:8080/";
         RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter(), CustomTpl.customLogFilter().withCustomTemplate());
-        random = new Random();
         userService = new UserService();
     }
 
-    private FullUser getRandomUser(){
-        int randomNumber = Math.abs(random.nextInt()); // Необходимо для того, чтобы всегда было уникальное имя пользователя
-
-        return FullUser.builder()
-                .login("CombuchaUser" + randomNumber)
-                .pass("gribochekPass")
-                .build();
-    }
-
-    private FullUser getAdminUser(){
-        return FullUser.builder()
-                .login("admin")
-                .pass("admin")
-                .build();
-    }
 
     @Test
     public void positiveRegisterTest(){
         FullUser user = getRandomUser();
+
+        userService.register(user)
+                .should(hasStatusCode(201))
+                .should(hasMessage("User created"));
+    }
+
+    @Test
+    public void positiveRegisterWithGameTest(){
+        FullUser user = getRandomUserWithGames();
 
         userService.register(user)
                 .should(hasStatusCode(201))
