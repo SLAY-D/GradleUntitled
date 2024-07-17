@@ -5,8 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 
-public class SearchResultPage {
-    private WebDriver driver;
+public class SearchResultPage extends BasePage{
 
     private By allFilterBtn = By.xpath("//button[@class='dropdown-filter__btn dropdown-filter__btn--all']");
     private By endPriceField = By.xpath("//input[@class='j-price' and @name='endN']");
@@ -16,31 +15,40 @@ public class SearchResultPage {
 
 
     public SearchResultPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
-    public void openFilters(){
+    /*
+        В классе SearchResultPage мы объявляем методы не через void, а через название класса.
+        С помощью такого объявления можно вызывать цепочку методов. Данное применение видно в WbFilterTests в методе searchResultTests.
+     */
+    public SearchResultPage openFilters(){
         driver.findElement(allFilterBtn).click();
+        return this;
     }
 
-    public void setMinPrice(Integer minValue){
+    public SearchResultPage setMinPrice(Integer minValue){
         driver.findElement(startPriceField).clear();
         driver.findElement(startPriceField).sendKeys(String.valueOf(minValue));
+        return this;
     }
 
-    public void setMaxPrice(Integer maxValue){
-        driver.findElement(endPriceField).clear();
-        driver.findElement(endPriceField).sendKeys(Keys.LEFT_CONTROL + "A");
-        driver.findElement(endPriceField).sendKeys(Keys.BACK_SPACE);
+    public SearchResultPage setMaxPrice(Integer maxValue){
+        clearTextField(endPriceField);
         driver.findElement(endPriceField).sendKeys(String.valueOf(maxValue));
+        return this;
     }
 
-    public void applyFilters(){
+    public SearchResultPage applyFilters(){
         driver.findElement(applyBtn).click();
+        waitForElementUpdated(items);
+        return this;
     }
 
-    public void openItem(){
+    public ItemPage openItem(){
         driver.findElements(items).get(0).click();
+        waitPageLoad();
+        return new ItemPage(driver);
 //        driver.findElements(items).stream()
 //                .filter(x->x.getText().contains("iPhone 11"))
 //                .findAny()

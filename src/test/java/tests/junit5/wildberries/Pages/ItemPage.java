@@ -20,14 +20,9 @@ public class ItemPage extends BasePage{
     }
 
     public Integer getItemPrice(){
-        /*  Инициализация JavascriptExecutor
-            По большей части JS необходим тогда, когда Selenium не всегда может достать содержимое элемента
-         */
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        WebElement itemPriceElement = driver.findElement(itemPriceText);
 
         // Скрипт возвращает содержимое текста элемента itemPriceElement
-        String priceText = (String) js.executeScript("return arguments[0].textContent;", itemPriceElement);
+        String priceText = getTextJs(itemPriceText);
 
         priceText = priceText.replaceAll("[^0-9.]","");
         return Integer.parseInt(priceText);

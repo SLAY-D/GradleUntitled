@@ -14,22 +14,18 @@ public class WbFilterTests extends BaseTest{
         Integer expectedPriceMax = 60000;
         Integer expectedPriceMin = 30000;
 
-        MainPage mainPage = new MainPage(driver);
-        SearchResultPage searchResultPage = new SearchResultPage(driver);
-        ItemPage itemPage = new ItemPage(driver);
-
-        mainPage.searchItem(expectedItem);
-        searchResultPage.openFilters();
-        searchResultPage.setMinPrice(expectedPriceMin);
-        searchResultPage.setMaxPrice(expectedPriceMax);
-        searchResultPage.applyFilters();
-        searchResultPage.openItem();
+        ItemPage itemPage = new MainPage(driver)
+                .searchItem(expectedItem)
+                .openFilters()
+                .setMinPrice(expectedPriceMin)
+                .setMaxPrice(expectedPriceMax)
+                .applyFilters()
+                .openItem();
 
         String actualName = itemPage.getItemName();
         Integer actualPrice = itemPage.getItemPrice();
         Assertions.assertTrue(actualName.toLowerCase().contains(expectedItem.toLowerCase()));
         System.out.println(actualPrice);
         Assertions.assertTrue(actualPrice >= expectedPriceMin && actualPrice <= expectedPriceMax);
-
     }
 }
