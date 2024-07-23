@@ -1,10 +1,11 @@
-package tests.junit5.wildberries.Pages;
+package tests.junit5.pageObjectTests.wildberries.wbPages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import tests.junit5.pageObjectTests.wildberries.BasePage;
 
-public class MainPage extends BasePage{
+public class MainPage extends BasePage {
 
     private final By searchField = By.id("searchInput");
     private final By searchBtn = By.id("applySearchBtn");
@@ -13,7 +14,7 @@ public class MainPage extends BasePage{
 
     public MainPage(WebDriver driver) {
         super(driver);
-        waitPageLoad();
+        waitPageLoadWb();
     }
 
     /*

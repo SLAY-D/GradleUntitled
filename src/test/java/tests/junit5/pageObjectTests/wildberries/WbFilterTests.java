@@ -1,12 +1,17 @@
-package tests.junit5.wildberries;
+package tests.junit5.pageObjectTests.wildberries;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tests.junit5.wildberries.Pages.ItemPage;
-import tests.junit5.wildberries.Pages.MainPage;
-import tests.junit5.wildberries.Pages.SearchResultPage;
+import tests.junit5.pageObjectTests.wildberries.wbPages.ItemPage;
+import tests.junit5.pageObjectTests.wildberries.wbPages.MainPage;
 
 public class WbFilterTests extends BaseTest{
+
+    @BeforeEach
+    public void openSite(){
+        driver.get("https://www.wildberries.ru/");
+    }
 
     @Test
     public void searchResultTests(){

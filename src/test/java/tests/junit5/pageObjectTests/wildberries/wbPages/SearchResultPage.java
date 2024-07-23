@@ -1,11 +1,10 @@
-package tests.junit5.wildberries.Pages;
+package tests.junit5.pageObjectTests.wildberries.wbPages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import tests.junit5.pageObjectTests.wildberries.BasePage;
 
-public class SearchResultPage extends BasePage{
+public class SearchResultPage extends BasePage {
 
     private By allFilterBtn = By.xpath("//button[@class='dropdown-filter__btn dropdown-filter__btn--all']");
     private By endPriceField = By.xpath("//input[@class='j-price' and @name='endN']");
@@ -47,7 +46,7 @@ public class SearchResultPage extends BasePage{
 
     public ItemPage openItem(){
         driver.findElements(items).get(0).click();
-        waitPageLoad();
+        waitPageLoadWb();
         return new ItemPage(driver);
 //        driver.findElements(items).stream()
 //                .filter(x->x.getText().contains("iPhone 11"))

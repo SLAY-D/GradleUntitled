@@ -1,4 +1,4 @@
-package tests.junit5.wildberries.Pages;
+package tests.junit5.pageObjectTests.wildberries;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -17,8 +17,6 @@ public class BasePage {
     protected WebDriverWait wait;
     protected JavascriptExecutor js;
     protected Actions actions;
-
-    private By pageLoader = By.xpath("//div[@class='general-preloader']");
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
@@ -40,7 +38,8 @@ public class BasePage {
     }
 
     // Ожидание на лоадер на странице
-    public void waitPageLoad(){
+    public void waitPageLoadWb(){
+        By pageLoader = By.xpath("//div[@class='general-preloader']");
         wait.until(ExpectedConditions.invisibilityOfElementLocated(pageLoader)); // Ожидание когда пропадет элемент
     }
 
@@ -52,6 +51,14 @@ public class BasePage {
         driver.findElement(locator).clear();
         driver.findElement(locator).sendKeys(Keys.LEFT_CONTROL + "A");
         driver.findElement(locator).sendKeys(Keys.BACK_SPACE);
+    }
+
+    public WebElement waitForTextPresentedInList(By list, String value){
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(list)); // Ожидание всех элементов списка
+        return driver.findElements(list).stream()
+                .filter(x->x.getText().contains(value))
+                .findFirst()
+                .orElseThrow(()->new NoSuchElementException("Такого города нет " + value));
     }
 
 }
