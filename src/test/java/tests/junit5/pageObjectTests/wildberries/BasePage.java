@@ -6,6 +6,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /*
     Класс относится ко всему проекту WB.
@@ -60,5 +63,34 @@ public class BasePage {
                 .findFirst()
                 .orElseThrow(()->new NoSuchElementException("Такого города нет " + value));
     }
+
+    public void waitForTextMatchesRegex(By locator, String regex){
+        Pattern pattern = Pattern.compile(regex);
+        wait.until(ExpectedConditions.textMatches(locator, pattern)); // Ждем пока текст не будет совпадать с регуляркой
+    }
+
+    public void waitForElementDisappear(By locator){
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+    }
+
+    public void waitForElementAppear(By locator){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    public Integer getDigitFromWebElement(WebElement element){
+        Integer digit = Integer.valueOf(element.getText().replaceAll("[^0-9.]",""));
+        return digit;
+        // Переписать? 37m
+    }
+
+    public List<Integer> getDigitsFromList(By locator){
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
+        return driver.findElements(locator).stream()
+                .filter(x->x.isDisplayed())
+                .map(x->getDigitFromWebElement(x))
+                .collect(Collectors.toList());
+    }
+
+
 
 }
