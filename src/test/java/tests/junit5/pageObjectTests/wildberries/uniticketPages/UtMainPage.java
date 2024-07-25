@@ -44,22 +44,23 @@ public class UtMainPage extends BasePage {
 
     public UtMainPage setDateForward(int day){
         driver.findElement(dateForward).click();
-        //wait.until(ExpectedConditions.presenceOfElementLocated((By) getDay(day)));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='month']")));
         System.out.println(getDay(day));
         getDay(day).click();
+        wait.until(ExpectedConditions.invisibilityOf(getDay(day)));
         return this;
     }
 
     public UtMainPage setDateBack(int day){
-        driver.findElement(dateBack).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='month']")));
+        //wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='month']")));
         getDay(day).click();
+        wait.until(ExpectedConditions.invisibilityOf(getDay(day)));
         return this;
     }
 
-    public void search(){
+    public UtSearchPage search(){
         driver.findElement(searchBtn).click();
+        return new UtSearchPage(driver);
     }
 
     private WebElement getDay(int day){

@@ -58,6 +58,7 @@ public class BasePage {
 
     public WebElement waitForTextPresentedInList(By list, String value){
         wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(list)); // Ожидание всех элементов списка
+        //wait.until(ExpectedConditions.elementToBeClickable(list)); // Ожидание всех элементов списка
         return driver.findElements(list).stream()
                 .filter(x->x.getText().contains(value))
                 .findFirst()

@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import tests.junit5.pageObjectTests.wildberries.BasePage;
 
+import java.util.List;
+
 public class UtSearchPage extends BasePage {
 
     private By titleLoader = By.xpath("//div[@class='countdown-title']");
@@ -16,4 +18,32 @@ public class UtSearchPage extends BasePage {
     public UtSearchPage(WebDriver driver) {
         super(driver);
     }
+
+    public List<Integer> getDaysForward(){
+        return getDigitsFromList(listOfForwardDays);
+    }
+
+    public List<Integer> getDaysBack(){
+        return getDigitsFromList(listOfBackDays);
+    }
+
+    public Integer getMainDayForward(){
+        return getDigitFromWebElement(driver.findElement(selectedDayForward));
+    }
+
+    public Integer getMainDayBack(){
+        return getDigitFromWebElement(driver.findElement(selectedDayBack));
+    }
+
+    public void waitForPage(){
+        waitForElementAppear(selectedDayForward);
+        waitForTextMatchesRegex(priceSelectedMain, "\\d+");
+    }
+
+    public void waitForTitleDisappear(){
+        waitForElementDisappear(titleLoader);
+    }
+
+
+
 }
