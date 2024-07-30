@@ -65,6 +65,18 @@ test {
     testLogging{
         events "passed", "skipped", "failed"
     }
+
+    // https://junit.org/junit5/docs/snapshot/user-guide/#writing-tests-parallel-execution
+    if(System.getProperty("threads") != null){ // Установить системную переменную threads для задания количества тредов
+        systemProperties += [
+                'junit.jupiter.execution.parallel.enabled'                 : true,
+                'junit.jupiter.execution.parallel.mode.default'            : "concurrent", // Формат запуска многопоточности
+                'junit.jupiter.execution.parallel.mode.classes.default'    : "concurrent",
+                'junit.jupiter.execution.parallel.config.strategy'         : "fixed", // Фиксированное количество потоков
+                'junit.jupiter.execution.parallel.config.fixed.parallelism': System.getProperty("threads").toInteger(),
+        ]
+    }
+
 }
 
 //// Запуск тестов по тегам
